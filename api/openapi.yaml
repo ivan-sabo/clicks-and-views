@@ -1,0 +1,196 @@
+openapi: 3.0.3
+info:
+    title: Clicks and Views - OpenAPI 3.0
+    description: |-
+        This is a simple RESTful API for website statistic. As the name says, it provides endpoints to track Clicks and Views.
+    version: 1.0.0
+servers:
+    - url: http://localhost:8080
+tags:
+    - name: click
+      description: Clicks API
+    - name: view
+      description: Views API
+paths:
+    /clicks:
+        get:
+            tags:
+                - click
+            summary: Filter Clicks
+            description: Multiple filters can be provided at the same time.
+            operationId: filterClicks
+            parameters:
+                - name: url
+                  in: query
+                  description: URL to filter by
+                  required: false
+                  schema:
+                      type: string
+                - name: before
+                  in: query
+                  description: DateTime to filter by
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+                - name: after
+                  in: query
+                  description: DateTime to filter by
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Click'
+        post:
+            tags:
+                - click
+            summary: Add a new click
+            description: Add a new click
+            operationId: addClick
+            requestBody:
+                description: Add a new click
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Click'
+                required: true
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Click'
+                '400':
+                    description: Invalid input
+                '422':
+                    description: Validation exception
+    /views:
+        get:
+            tags:
+                - view
+            summary: Filter Views
+            description: Multiple filters can be provided at the same time.
+            operationId: filterViews
+            parameters:
+                - name: url
+                  in: query
+                  description: URL to filter by
+                  required: false
+                  schema:
+                      type: string
+                - name: before
+                  in: query
+                  description: DateTime to filter by
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+                - name: after
+                  in: query
+                  description: DateTime to filter by
+                  required: false
+                  schema:
+                      type: string
+                      format: date-time
+
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/View'
+        post:
+            tags:
+                - view
+            summary: Add a new view
+            description: Add a new view
+            operationId: addView
+            requestBody:
+                description: Add a new view
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/View'
+                required: true
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/View'
+                '400':
+                    description: Invalid input
+                '422':
+                    description: Validation exception
+components:
+    schemas:
+        Click:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                    example: 10
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: 2024-04-28T15:58:08Z
+                url:
+                    type: string
+                    description: URL of tracked webpage
+                    example: http://flamingo.cc
+        View:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                    example: 10
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: 2024-04-28T15:58:08Z
+                url:
+                    type: string
+                    description: URL of tracked webpage
+                    example: http://flamingo.cc
+        ClickRequest:
+            type: object
+            properties:
+                url:
+                    type: string
+                    description: URL of tracked webpage
+                    example: http://flamingo.cc
+        ViewRequest:
+            type: object
+            properties:
+                url:
+                    type: string
+                    description: URL of tracked webpage
+                    example: http://flamingo.cc
+    requestBodies:
+        Click:
+            description: Click object that needs to be persisted
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ClickRequest'
+        View:
+            description: View object that needs to be persisted
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/ViewRequest'
