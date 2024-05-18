@@ -11,6 +11,12 @@ To start a project simply navigate to "cmd" folder and run
 foo@bar:~$ go run main.go
 ```
 
+... or from root folder:
+
+```console
+foo@bar:~$ make run
+```
+
 To run local OpenAPI web client, navigate to project root folder run the following  
 command, and open http://localhost in your browser:
 
